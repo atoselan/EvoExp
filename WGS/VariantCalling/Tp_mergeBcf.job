@@ -1,0 +1,36 @@
+#!/bin/sh
+#BSUB -q long-ib
+#BSUB -J bcfMerge
+#BSUB -M 8000
+#BSUB -n 16
+#BSUB -oo bcfMerge-%J.out
+#BSUB -eo bcfMerge-%J.err
+
+. /etc/profile
+module add bcftools/1.5/gcc
+
+# Remeber the outlier samples are:
+# SAM37228 SAM37231
+
+# Modified on 9/8/2019 to add 2 more replicates of TP_T0 (PRO2022_S1 & PRO2022_S2)
+
+
+bcftools merge --threads 15 --merge all \
+  SAM17997/SAM17997.filtered.bcf \
+  /gpfs/data/mock_lab/andrew-temp/WGS/PRO2022_S1_gDNA/PRO2022_S1_gDNA.filtered.bcf \
+  /gpfs/data/mock_lab/andrew-temp/WGS/PRO2022_S2_gDNA/PRO2022_S2_gDNA.filtered.bcf \
+  SAM17998/SAM17998.filtered.bcf SAM37194/SAM37194.filtered.bcf \
+  SAM37195/SAM37195.filtered.bcf SAM37196/SAM37196.filtered.bcf SAM37197/SAM37197.filtered.bcf \
+  SAM37198/SAM37198.filtered.bcf SAM37199/SAM37199.filtered.bcf SAM37200/SAM37200.filtered.bcf \
+  SAM37201/SAM37201.filtered.bcf SAM37202/SAM37202.filtered.bcf SAM37203/SAM37203.filtered.bcf \
+  SAM37204/SAM37204.filtered.bcf SAM37205/SAM37205.filtered.bcf SAM37206/SAM37206.filtered.bcf \
+  SAM37207/SAM37207.filtered.bcf SAM37208/SAM37208.filtered.bcf SAM37209/SAM37209.filtered.bcf \
+  SAM37210/SAM37210.filtered.bcf SAM37211/SAM37211.filtered.bcf SAM37212/SAM37212.filtered.bcf \
+  SAM37213/SAM37213.filtered.bcf SAM37214/SAM37214.filtered.bcf SAM37215/SAM37215.filtered.bcf \
+  SAM37216/SAM37216.filtered.bcf SAM37217/SAM37217.filtered.bcf SAM37218/SAM37218.filtered.bcf \
+  SAM37219/SAM37219.filtered.bcf SAM37220/SAM37220.filtered.bcf SAM37221/SAM37221.filtered.bcf \
+  SAM37222/SAM37222.filtered.bcf SAM37223/SAM37223.filtered.bcf SAM37224/SAM37224.filtered.bcf \
+  SAM37225/SAM37225.filtered.bcf SAM37226/SAM37226.filtered.bcf SAM37227/SAM37227.filtered.bcf \
+  SAM37228/SAM37228.filtered.bcf SAM37229/SAM37229.filtered.bcf SAM37230/SAM37230.filtered.bcf \
+  SAM37231/SAM37231.filtered.bcf SAM37232/SAM37232.filtered.bcf \
+  -Ov | bcftools filter -Ov --include "F_MISSING<0.1" | bcftools view -v snps -Ob -o mergedFiltered_NoMismatchFilter_allBatches_SNPsOnly.bcf
