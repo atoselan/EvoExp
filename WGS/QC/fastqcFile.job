@@ -1,0 +1,19 @@
+#!/bin/sh
+#BSUB -q long-eth
+#BSUB -J fastqc
+#BSUB -M 4000
+#BSUB -N
+#BSUB -oo fastqc-%J.out
+#BSUB -eo fastqc-%J.err
+
+. /etc/profile
+module add fastqc/0.11.5
+
+for f in PRO2022*
+do
+  cd $f
+  seq1=`ls $f*_1.fastq.gz`
+  seq2=`ls $f*_2.fastq.gz`
+  fastqc $seq1 $seq2
+  cd ../
+done

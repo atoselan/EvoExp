@@ -1,0 +1,37 @@
+#!/bin/sh
+#BSUB -q long-eth
+#BSUB -J trim
+#BSUB -M 32000
+#BSUB -N
+#BSUB -n 8
+#BSUB -oo trim-%J.out
+#BSUB -eo trim-%J.err
+
+. /etc/profile
+module add nextclip/1.3
+module add trimmomatic/0.36
+
+adaptor_seqs="/gpfs/home/bva09npu/scratch/RNA-SEQ/adaptor_seqs/adaptor_seqs.fas"
+
+
+for f in PRO2022*
+do
+  cd $f
+  seq1=`ls ${f}*_1.fastq.gz`
+  seq2=`ls ${f}*_2.fastq.gz`
+  prefix=`echo ${seq1%_1.fastq.gz}`
+  gunzip $seq1 $seq2
+  # Remove putative PCR duplicates
+  nextclip -i ${seq1%.gz} -j ${seq2%.gz} -o ${prefix}_nodup --only_duplicates > ${prefix}.nextclip.log
+  # Remove adaptor seqs and trim by quality score
+  trimmomatic PE -phred33 -threads 7 \
+    ${prefix}_nodup_D_R1.fastq ${prefix}_nodup_D_R2.fastq \
+    ${prefix}_paired_R1.fastq ${prefix}_unpaired_R1.fastq \
+    ${prefix}_paired_R2.fastq ${prefix}_unpaired_R2.fastq \
+    ILLUMINACLIP:${adaptor_seqs}:2:30:10 SLIDINGWINDOW:4:20 MINLEN:50; > ${prefix}.trimmomatic.log
+  # Tidy up
+  gzip ${seq1%.gz} ${seq2%.gz}
+  gzip ${prefix}*_paired_R*.fastq
+  rm -f *_unpaired_R*.fastq *_[ABCD]_*
+  cd ../
+done

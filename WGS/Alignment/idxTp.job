@@ -1,0 +1,12 @@
+#!/bin/sh
+#BSUB -q long-eth
+#BSUB -J bwaIdx
+#BSUB -M 16000
+#BSUB -N
+#BSUB -oo bwaIdx-%J.out
+#BSUB -eo bwaIdx-%J.err
+
+. /etc/profile
+module add bwa/0.7.12
+
+bwa index Thaps3_chromosomes_assembly_repeatmasked.fasta

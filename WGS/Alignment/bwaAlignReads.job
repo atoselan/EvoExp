@@ -1,0 +1,30 @@
+#!/bin/sh
+#BSUB -q long-eth
+#BSUB -J bwaTp
+#BSUB -M 32000
+#BSUB -N
+#BSUB -n 16
+#BSUB -oo bwaTp-%J.out
+#BSUB -eo bwaTp-%J.err
+
+. /etc/profile
+module add bwa/0.7.12
+module add samtools/1.5/gcc
+
+
+cores=15
+ref="/gpfs/data/mock_lab/andrew-temp/reference_genomes/T_pseudonana/Thaps3_chromosomes_assembly_repeatmasked.fasta"
+#ref="/gpfs/data/mock_lab/andrew-temp/reference_genomes/F_cylindrus/Fracy1_assembly_scaffolds.fasta"
+
+
+for f in PRO*
+do
+  cd $f
+  seq1=`ls $f*_paired_R1.fastq.gz`
+  seq2=`ls $f*_paired_R2.fastq.gz`
+  prefix=${seq1%_paired_R1.fastq.gz}
+  bwa mem -t $cores $ref $seq1 $seq2 | samtools view -  -b -h -q 10 -F 256 -f 2 -o tmp.bam
+  samtools sort tmp.bam ${prefix}_Tp.sorted
+  rm -f tmp.bam
+  cd ../
+done
