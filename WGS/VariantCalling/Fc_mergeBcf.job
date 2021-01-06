@@ -1,0 +1,31 @@
+#!/bin/sh
+#BSUB -q long-ib
+#BSUB -J bcfMergeFC
+#BSUB -M 8000
+#BSUB -n 16
+#BSUB -oo bcfMergeFC-%J.out
+#BSUB -eo bcfMergeFC-%J.err
+
+. /etc/profile
+module add bcftools/1.5/gcc
+
+bcftools merge --threads 15 --merge all \
+  /gpfs/data/mock_lab/andrew-temp/WGS/FC_T0_2019/subset1.filtered.bcf \
+  /gpfs/data/mock_lab/andrew-temp/WGS/FC_T0_2019/subset2.filtered.bcf \
+  /gpfs/data/mock_lab/andrew-temp/WGS/FC_T0_2019/subset3.filtered.bcf \
+  SAM37233/SAM37233.filtered.bcf \
+  SAM37234/SAM37234.filtered.bcf \
+  SAM37235/SAM37235.filtered.bcf \
+  SAM37236/SAM37236.filtered.bcf \
+  SAM37237/SAM37237.filtered.bcf \
+  SAM37238/SAM37238.filtered.bcf \
+  SAM37239/SAM37239.filtered.bcf \
+  SAM37240/SAM37240.filtered.bcf \
+  -Ov \
+  | bcftools filter -Ov --include "F_MISSING<0.1" \
+    | bcftools view -v snps -Ob -o tmp.bcf
+
+# Rename samples
+bcftools reheader -s miscFiles/newFCsampleNames.txt -o FC_mergedFiltered_noMismatchFilter_allBatches_subT0_SNPsOnly.bcf tmp.bcf
+
+rm -f tmp.bcf

@@ -1,0 +1,50 @@
+#!/bin/sh
+#BSUB -q long-ib
+#BSUB -J bcfCall
+#BSUB -M 2000
+#BSUB -n 8
+#BSUB -oo bcfCallFC-%J.out
+#BSUB -eo bcfCallFC-%J.err
+
+. /etc/profile
+module add bcftools/1.5/gcc
+module add htslib/1.5/gcc
+module add bamtools/gcc
+module add samtools/1.5/gcc
+module add gcc
+
+
+ref="/gpfs/data/mock_lab/andrew-temp/reference_genomes/F_cylindrus/Fracy1_assembly_scaffolds.fasta"
+samFolder="/gpfs/home/bva09npu/scratch/WGS"
+
+
+while read sample
+do
+  # Get bam file
+  bamFile=`ls ${samFolder}/${sample}/*.bam`
+
+  if [ ! -f ${bamFile}.bai ]; then
+    samtools index $bamFile
+  fi
+
+  # Filter bam file by number of mismatches
+  bamtools filter -in ${bamFile} -mapQuality ">=40" | samtools view -   -b -o ${samFolder}/${sample}/${sample}.tmp.bam
+
+  samtools index ${samFolder}/${sample}/${sample}.tmp.bam
+
+  samtools mpileup -t DP,AD -Buf ${ref} ${samFolder}/${sample}/${sample}.tmp.bam | bcftools call --threads 8 -m -Ob -o ${samFolder}/${sample}/${sample}.call.bcf
+
+  # Get average depth
+  avg=`bcftools query -f '%DP\n' ${samFolder}/${sample}/${sample}.call.bcf | awk '{sum+=$1} END {print sum/NR}'`
+  #bcftools query -f '%DP\n' ${samFolder}/${sample}/${sample}.call.bcf | awk '{sum+=$1} END {print sum/NR}' > ${samFolder}/${sample}/${sample}.avg.depth
+
+  bcftools filter --SnpGap 10 --include "MIN(IDV)>=5 & MIN(MQ)>=40 & %QUAL>40 & MIN(DP)>=10 & MAX(DP)<=2*${avg}" \
+    -Ob -o ${samFolder}/${sample}/${sample}.filtered.bcf ${samFolder}/${sample}/${sample}.call.bcf
+
+  # Delete intermediate files
+  rm -f ${samFolder}/${sample}/${sample}.call.bcf
+  rm -f ${samFolder}/${sample}/${sample}.tmp.bam*
+
+  # Index bcf
+  tabix ${samFolder}/${sample}/${sample}.filtered.bcf
+done < miscFiles/sampleListFC.txt
