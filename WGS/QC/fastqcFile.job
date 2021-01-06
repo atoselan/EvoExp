@@ -9,7 +9,7 @@
 . /etc/profile
 module add fastqc/0.11.5
 
-for f in PRO2022*
+for f in PRO*
 do
   cd $f
   seq1=`ls $f*_1.fastq.gz`

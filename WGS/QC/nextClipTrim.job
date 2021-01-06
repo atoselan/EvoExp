@@ -14,7 +14,7 @@ module add trimmomatic/0.36
 adaptor_seqs="/gpfs/home/bva09npu/scratch/RNA-SEQ/adaptor_seqs/adaptor_seqs.fas"
 
 
-for f in PRO2022*
+for f in PRO*
 do
   cd $f
   seq1=`ls ${f}*_1.fastq.gz`
