@@ -1,0 +1,82 @@
+#!/bin/bash
+#BSUB -q long-eth
+#BSUB -J winFST
+#BSUB -M 4000
+#BSUB -N
+#BSUB -oo winFST-%J.out
+#BSUB -eo winFST-%J.err
+
+. /etc/profile
+module add vcftools/v0.1.14015/gcc
+
+winSize=10000
+stepSize=1000
+bcfFile="/gpfs/home/bva09npu/bcftoolsVCFwork/windowedFST/mergedFiltered_NoMismatchFilter_allBatches_SNPsOnly.bcf"
+outDir="/gpfs/home/bva09npu/bcftoolsVCFwork/windowedFST/noMismatchFilteringAllSamples/vsT0_ALL_10k"
+popDir="/gpfs/home/bva09npu/bcftoolsVCFwork/windowedFST/popFiles"
+
+
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T0_22C_ALL.pop --weir-fst-pop ${popDir}/T70_22C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T0_22C_ALL_T70_22C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T0_22C_ALL.pop --weir-fst-pop ${popDir}/T270_22C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T0_22C_ALL_T270_22C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T0_22C_ALL.pop --weir-fst-pop ${popDir}/T32_9C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T0_22C_ALL_T32_9C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T0_22C_ALL.pop --weir-fst-pop ${popDir}/T144_9C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T0_22C_ALL_T144_9C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T0_22C_ALL.pop --weir-fst-pop ${popDir}/T250_9C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T0_22C_ALL_T250_9C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T0_22C_ALL.pop --weir-fst-pop ${popDir}/T50_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T0_22C_ALL_T50_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T0_22C_ALL.pop --weir-fst-pop ${popDir}/T210_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T0_22C_ALL_T210_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T0_22C_ALL.pop --weir-fst-pop ${popDir}/T300_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T0_22C_ALL_T300_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T0_22C_ALL.pop --weir-fst-pop ${popDir}/T450_32C_1_4.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T0_22C_ALL_T450_32C_1_4_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T0_22C_ALL.pop --weir-fst-pop ${popDir}/T450_32C_2_3_5.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T0_22C_ALL_T450_32C_2_3_5_10k --remove-filtered-all --remove-indels
+
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T70_22C.pop --weir-fst-pop ${popDir}/T270_22C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T70_22C_T270_22C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T70_22C.pop --weir-fst-pop ${popDir}/T32_9C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T70_22C_T32_9C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T70_22C.pop --weir-fst-pop ${popDir}/T144_9C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T70_22C_T144_9C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T70_22C.pop --weir-fst-pop ${popDir}/T250_9C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T70_22C_T250_9C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T70_22C.pop --weir-fst-pop ${popDir}/T50_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T70_22C_T50_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T70_22C.pop --weir-fst-pop ${popDir}/T210_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T70_22C_T210_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T70_22C.pop --weir-fst-pop ${popDir}/T300_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T70_22C_T300_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T70_22C.pop --weir-fst-pop ${popDir}/T450_32C_1_4.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T70_22C_T450_32C_1_4_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T70_22C.pop --weir-fst-pop ${popDir}/T450_32C_2_3_5.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T70_22C_T450_32C_2_3_5_10k --remove-filtered-all --remove-indels
+
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T270_22C.pop --weir-fst-pop ${popDir}/T32_9C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T270_22C_T32_9C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T270_22C.pop --weir-fst-pop ${popDir}/T144_9C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T270_22C_T144_9C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T270_22C.pop --weir-fst-pop ${popDir}/T250_9C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T270_22C_T250_9C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T270_22C.pop --weir-fst-pop ${popDir}/T50_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T270_22C_T50_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T270_22C.pop --weir-fst-pop ${popDir}/T210_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T270_22C_T210_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T270_22C.pop --weir-fst-pop ${popDir}/T300_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T270_22C_T300_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T270_22C.pop --weir-fst-pop ${popDir}/T450_32C_1_4.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T270_22C_T450_32C_1_4_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T270_22C.pop --weir-fst-pop ${popDir}/T450_32C_2_3_5.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T270_22C_T450_32C_2_3_5_10k --remove-filtered-all --remove-indels
+
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T32_9C.pop --weir-fst-pop ${popDir}/T144_9C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T32_9C_T144_9C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T32_9C.pop --weir-fst-pop ${popDir}/T250_9C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T32_9C_T250_9C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T32_9C.pop --weir-fst-pop ${popDir}/T50_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T32_9C_T50_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T32_9C.pop --weir-fst-pop ${popDir}/T210_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T32_9C_T210_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T32_9C.pop --weir-fst-pop ${popDir}/T300_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T32_9C_T300_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T32_9C.pop --weir-fst-pop ${popDir}/T450_32C_1_4.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T32_9C_T450_32C_1_4_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T32_9C.pop --weir-fst-pop ${popDir}/T450_32C_2_3_5.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T32_9C_T450_32C_2_3_5_10k --remove-filtered-all --remove-indels
+
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T144_9C.pop --weir-fst-pop ${popDir}/T250_9C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T144_9C_T250_9C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T144_9C.pop --weir-fst-pop ${popDir}/T50_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T144_9C_T50_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T144_9C.pop --weir-fst-pop ${popDir}/T210_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T144_9C_T210_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T144_9C.pop --weir-fst-pop ${popDir}/T300_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T144_9C_T300_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T144_9C.pop --weir-fst-pop ${popDir}/T450_32C_1_4.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T144_9C_T450_32C_1_4_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T144_9C.pop --weir-fst-pop ${popDir}/T450_32C_2_3_5.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T144_9C_T450_32C_2_3_5_10k --remove-filtered-all --remove-indels
+
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T250_9C.pop --weir-fst-pop ${popDir}/T50_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T250_9C_T50_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T250_9C.pop --weir-fst-pop ${popDir}/T210_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T250_9C_T210_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T250_9C.pop --weir-fst-pop ${popDir}/T300_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T250_9C_T300_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T250_9C.pop --weir-fst-pop ${popDir}/T450_32C_1_4.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T250_9C_T450_32C_1_4_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T250_9C.pop --weir-fst-pop ${popDir}/T450_32C_2_3_5.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T250_9C_T450_32C_2_3_5_10k --remove-filtered-all --remove-indels
+
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T50_32C.pop --weir-fst-pop ${popDir}/T210_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T50_32C_T210_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T50_32C.pop --weir-fst-pop ${popDir}/T300_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T50_32C_T300_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T50_32C.pop --weir-fst-pop ${popDir}/T450_32C_1_4.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T50_32C_T450_32C_1_4_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T50_32C.pop --weir-fst-pop ${popDir}/T450_32C_2_3_5.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T50_32C_T450_32C_2_3_5_10k --remove-filtered-all --remove-indels
+
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T210_32C.pop --weir-fst-pop ${popDir}/T300_32C.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T210_32C_T300_32C_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T210_32C.pop --weir-fst-pop ${popDir}/T450_32C_1_4.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T210_32C_T450_32C_1_4_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T210_32C.pop --weir-fst-pop ${popDir}/T450_32C_2_3_5.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T210_32C_T450_32C_2_3_5_10k --remove-filtered-all --remove-indels
+
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T300_32C.pop --weir-fst-pop ${popDir}/T450_32C_1_4.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T300_32C_T450_32C_1_4_10k --remove-filtered-all --remove-indels
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T300_32C.pop --weir-fst-pop ${popDir}/T450_32C_2_3_5.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T300_32C_T450_32C_2_3_5_10k --remove-filtered-all --remove-indels
+
+vcftools --bcf ${bcfFile} --weir-fst-pop ${popDir}/T450_32C_1_4.pop --weir-fst-pop ${popDir}/T450_32C_2_3_5.pop --fst-window-size $winSize --fst-window-step $stepSize --out ${outDir}/T450_32C_1_4_T450_32C_2_3_5_10k --remove-filtered-all --remove-indels
